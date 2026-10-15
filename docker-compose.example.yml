@@ -1,0 +1,38 @@
+# Template root compose (new FE-MESS-PORTAL + BE-MESS-PORTAL).
+# Copy to docker-compose.yml, or just create BE-MESS-PORTAL/.env from its
+# .env.example and run `docker compose up --build`. Inline env values below are
+# placeholders to show what the backend expects.
+services:
+  frontend:
+    build:
+      context: ./FE-MESS-PORTAL
+      args:
+        VITE_API_BASE_URL: http://localhost:4000/api
+    container_name: mess-portal-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./BE-MESS-PORTAL
+    container_name: mess-portal-backend
+    environment:
+      - NODE_ENV=production
+      - NODE_PORT=4000
+      - CORS_ORIGINS=http://localhost:8080
+      - DB_AUTH_USER=your_db_user
+      - DB_AUTH_PASSWORD=your_db_password
+      - DB_URL=yourcluster.xxxxx.mongodb.net
+      - DB_NAME=MessDB
+      - JWT_SECRET=replace_with_a_long_random_secret
+      - ACCESS_TOKEN_EXPIRES=15m
+      - REFRESH_TOKEN_EXPIRES_DAYS=7
+      - CLOUDINARY_CLOUD_NAME=your_cloud_name
+      - CLOUDINARY_API_KEY=your_api_key
+      - CLOUDINARY_API_SECRET=your_api_secret
+    ports:
+      - "4000:4000"
+    restart: unless-stopped

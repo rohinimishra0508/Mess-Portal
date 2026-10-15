@@ -1,0 +1,7 @@
+# Only the root compose is kept local (it may hold secrets); per-app
+# compose files (FE-MESS-PORTAL, BE-MESS-PORTAL) are tracked.
+/docker-compose.yml
+.env
+node_modules/
+dist/
+docs/
